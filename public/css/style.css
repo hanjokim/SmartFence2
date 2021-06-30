@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 1px;
+    box-sizing:border-box;
+    width: 100%;
+    font-family: "맑은 고딕", sans-serif;
+}
+#leftLogo {
+    width: 20%;
+    display: block;
+
+}
+#mainTitle {
+    width: 60%;
+}
+#rightLogo {
+    display: block;
+    width: 20%;
+}
+#clock {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 3px gray;
+}
+#date {
+    color: crimson;
+}
+#time {
+    color: crimson;
+}
+#container {
+    width:100%;
+}
+header h1 {
+    color : black;
+    font-size:3em;
+    text-shadow:2px 2px 3px gray;
+    text-align: center;
+    position: relative;
+}
+header {
+    width:100%;
+    height: auto;
+}
+header > div {
+    display: flex;
+    /*display: inline-block;*/
+    float: left;
+    vertical-align: middle;
+}
+header > div > img {
+    max-height: 5em;
+    object-fit: contain;
+    align-items: center;
+}
+header.logo {
+    margin: 0;
+    padding: 0.1em;
+}
+#left {
+    float: left;
+    width: 50%;
+}
+#right {
+    float: right;
+    width: 50%;
+}
+.additionalInfo {
+    font-size:1.5em;
+    font-weight: bold;
+    text-shadow:2px 2px 3px gray;
+    padding-top: 0.1em;
+    padding-bottom: 0.2em;
+}
+.sq_bullet {
+    list-style: square;
+    /*list-style-image: url("../media/icon_information.png");*/
+}
+.sectionTitle {
+    font-size:2em;
+    font-weight: bold;
+    color: darkslategrey;
+    text-shadow:2px 2px 3px gray;
+    padding-top: 0.3em;
+    padding-bottom: 0.1em;
+}

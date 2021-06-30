@@ -1,0 +1,27 @@
+table.bisContent {
+    background-color: #555555;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+table.bisContent td, table.bisContent th {
+    border: 1px solid #555555;
+    padding: 5px 10px;
+}
+table.bisContent tbody td {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+table.bisContent td:nth-child(1) {
+    background: #398AA4;
+}
+table.bisContent thead {
+    background: #265C6D;
+}
+table.bisContent thead th {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+}

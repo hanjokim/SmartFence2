@@ -1,0 +1,28 @@
+table {
+    table-layout: fixed;
+}
+
+table.newsContent {
+    border: 3px solid black;
+    background-color: #D5D5D5;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+table.newsContent td, table.newsContent th {
+    border: 1px solid #555555;
+    padding: 5px 10px;
+}
+table.newsContent tbody td {
+    width: 100%;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    /*word-spacing: 0.05em;*/
+    color: #0b2f80;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1.5em;
+    height: 2em;
+}
