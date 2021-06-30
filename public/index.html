@@ -72,6 +72,7 @@
 
             getRouteNo();
 
+            // cheerio 를 사용해서 refactoring?
             function getRouteNo(){
                 $.ajax({
                     type: 'get',
@@ -133,7 +134,7 @@
                     } else if (error === 'timeout') {
                         alert('Request Time out.');
                     } else {
-                        alert('Unknown Error.n' + xhr.responseText);
+                        alert('Unknown Error.' + xhr.responseText);
                     }
                 });
                 promise.always();
@@ -154,6 +155,7 @@
             }
 
             // 버스 도착 정보 분석 및 도착 시간 순 정렬 : xmlObj -> busArray
+            // cheerio 를 사용해서 refactoring?
             function getArrivalBusInfo(xmlObj) {
                 let busArray = [];
 
