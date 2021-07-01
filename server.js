@@ -50,10 +50,10 @@ const apiData = {
     pageNo: 1,
 };
 
-const bisApiData = Object.assign({}, apiData, { bstopId: 168001043 }); // 청라국제도시역 정류장
+let bisApiData = Object.assign({}, apiData, { bstopId: 168001043 }); // 청라국제도시역(89-043) 정류장
 let weatherApiData = {};
-weatherApiData.vil = Object.assign({}, apiData, {dataType: 'XML', base_date: null, base_time: null, nx: 55, ny: 127});    // 인천_서구_검암경서동
-weatherApiData.liv = Object.assign({}, apiData, {dataType: 'XML', areaNo: 2826051500, time: null});                       // 인천_서구_검암경서동
+weatherApiData.vil = Object.assign({}, apiData, {dataType: 'XML', base_date: null, base_time: null, nx: 54, ny: 126});    // 인천_서구_청라3동
+weatherApiData.liv = Object.assign({}, apiData, {dataType: 'XML', areaNo: 2826053900, time: null});                       // 인천_서구_청라3동
 
 const bisPayloadString = Object.entries(bisApiData).map(e => e.join('=')).join('&');
 // var bisPayloadString = $.param(bisApiData); // jQuery 사용시
