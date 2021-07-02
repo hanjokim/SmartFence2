@@ -7,6 +7,7 @@ table.climate {
 table.climate tr {
     text-align: center;
 }
+
 table.climate img {
     padding: 0 15px;
 }
@@ -18,12 +19,17 @@ table.climate tbody td {
     font-size: 1.2em;
     font-weight: bold;
 }
+
 table.climate thead {
     background: #CFCFCF;
     background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
     background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
     background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
     border-bottom: 3px solid #000000;
+}
+
+table.climate td:nth-child(1) {
+    background-color: #CFCFCF;
 }
 table.climate thead th {
     font-size: 1.2em;
