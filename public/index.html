@@ -11,7 +11,8 @@
             let parser = new DOMParser();
             let clockTimerId = -1;
             let bisTimerId = -1;
-            let boardTimerId = -1;
+            let getBoardTimerId = -1;
+            let rollBoardTimerId = -1;
 
             // number.toString().padStart(2, '0');
             function leadingZeros(n, digits) {
@@ -187,7 +188,7 @@
 
             function boardInit(intervalMinute) {
                 displayBoardInfo();
-                boardTimerId = setInterval(displayBoardInfo, intervalMinute * 60 * 1000);
+                getBoardTimerId = setInterval(displayBoardInfo, intervalMinute * 60 * 1000);
             }
 
             // 서구청 [새소식] 게시판 목록 표시하기
@@ -208,7 +209,7 @@
                 let promise = $.ajax({
                     type: 'get',
                     url: '/getSeoguBoard',
-                    // async: false,  // promise.done 내부로 게시판 표시 루틴을 넣어야 async 가능?
+                    // async: false,
                     data: {
                         pageNo: pageNo,
                     }
@@ -246,11 +247,11 @@
                         });
 
                         objArr.push(article);
-                        $('#article_' + i).html(article.no + ' | ' + article.datetime + ' | ' + article.title + ' | ' + article.author);
+                        // $('#article_' + i).html(article.no + ' | ' + article.datetime + ' | ' + article.title + ' | ' + article.author);
                     });
-                    // objArr.forEach((item, i) => {
-                    //     $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + ' | ' + item.author);
-                    // });
+                    objArr.forEach((item, i) => {
+                        $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + ' | ' + item.author);
+                    });
                 });
                 return objArr;
             }
