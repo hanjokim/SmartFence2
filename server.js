@@ -20,7 +20,7 @@ const weatherApiNames = {
     liv: 'LivingWthrIdxService01' // 생활기상지수 조회 서비스
 }
 const apiUrl = {
-    // BIS 관련 URLs
+    // BIS 관련 URLs8200000000000000000000000000000000000
     getAllRouteBusArrivalList: bisBaseUrl + bisApiNames.arr + '/getAllRouteBusArrivalList', // 버스도착정보목록조회(arr): serviceKey, numOfRows, pageNo, bstopId
     getBusArrivalList: bisBaseUrl + bisApiNames.arr + '/getBusArrivalList',                 // 버스도착정보항목조회(arr): serviceKey, numOfRows, pageNo, bstopId, routeId
     getBusRouteSectionList: bisBaseUrl + bisApiNames.rou + '/getBusRouteSectionList',       // 경유 정류소 목록 조회(rou): serviceKey, numOfRows, pageNo, routeId
