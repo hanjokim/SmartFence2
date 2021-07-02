@@ -180,7 +180,9 @@
                 return busArray;
             }
 
+            const boardMaxLines = 4; // 게시판 최대 줄 수
             const boardInfoInterval = 60; // 게시판 정보 갱신 주기 - 분 단위
+            const rollBoardInterval = 5; // 게시판 정보 롤링 주기 - 초 단위
             let articleArray = [];
 
             // 게시판 정보 초기화
@@ -203,7 +205,7 @@
             // 서구청 [새소식] 게시판 목록 가져오기(Array)
             function getSeoguBoardArray(pageNo){
                 const present = new Date();
-                const presentDate = present.getFullYear() + '.' + leadingZeros(present.getMonth()+1, 2) + '.' + leadingZeros(present.getDate());
+                const presentDate = present.getFullYear() + '.' + leadingZeros(present.getMonth()+1, 2) + '.' + leadingZeros(present.getDate(), 2);
 
                 let objArr = [];
                 let promise = $.ajax({
@@ -238,7 +240,11 @@
                                     break
                                 case 4:
                                     let articleDate = $(e).text();
-                                    article['datetime'] = articleDate.indexOf(':') > 0 ? presentDate : articleDate; // 당일자 게시물은 날짜가 아닌 시간 표시이므로 이를 당일 날짜로 변경
+                                    // article['datetime'] = articleDate.indexOf(':') > 0 ? presentDate : articleDate; // 당일자 게시물은 날짜가 아닌 시간 표시이므로 이를 당일 날짜로 변경
+
+                                    // 당일자 게시물은 날짜가 아닌 시간 표시이므로 이를 "오늘+시간"으"로 변경
+                                    indexOfSecondSeparator = articleDate.lastIndexOf(':');
+                                    article['datetime'] = indexOfSecondSeparator > 0 ? "[오늘]" + articleDate.slice(0, indexOfSecondSeparator) : articleDate;
                                     break
                                 case 5:
                                     article['hits'] = $(e).text();
@@ -249,9 +255,26 @@
                         objArr.push(article);
                         // $('#article_' + i).html(article.no + ' | ' + article.datetime + ' | ' + article.title + ' | ' + article.author);
                     });
-                    objArr.forEach((item, i) => {
-                        $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + ' | ' + item.author);
-                    });
+
+                    displayBoard(objArr);
+
+                    var i = 1;
+                    rollBoardTimerId = setInterval(function (){
+                        // (게시판 표시 줄수 * 반복 횟수)가 아이템 갯수를 넘으면 처음부터 다시 시작
+                        if (i * boardMaxLines >= objArr.length) {
+                            i = 0;
+                        }
+                        var dispItems = objArr.slice(i * boardMaxLines, (i+1)*boardMaxLines);
+                        displayBoard(dispItems);
+                        i++;
+                    }, rollBoardInterval * 1000);
+
+                    function displayBoard(articleArr) {
+                        $('#notice li').html("");
+                        articleArr.forEach((item, i) => {
+                            $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + ' | ' + item.author);
+                        });
+                    }
                 });
                 return objArr;
             }
@@ -303,7 +326,7 @@
                 <h2 class="additionalInfo">서구청 홈페이지 [새소식] 게시판을 참고하세요</h2>
                 <link rel="stylesheet" href="css/notice.css">
                 <ul class="sq_bullet">
-                    <li id="article_0"></li>
+                    <li id="article_0">게시판을 읽어오는 중입니다...</li>
                     <li id="article_1"></li>
                     <li id="article_2"></li>
                     <li id="article_3"></li>
