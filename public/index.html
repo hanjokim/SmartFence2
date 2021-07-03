@@ -125,7 +125,7 @@
                 promise.fail(function (xhr, status, error) {
                     alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
                     if (xhr.status === 0) {
-                        alert('You are offline!!\n Please Check Your Network.');
+                        alert('You are offline!!\nPlease Check Your Network.');
                     } else if (xhr.status === 404) {
                         alert('Requested URL not found.');
                     } else if (xhr.status === 500) {
