@@ -1,16 +1,16 @@
-// const fetch = require("node-fetch");
+const fetch = require("node-fetch");
 
 // var baseDate = apiResponse.response.body.items.item[0].baseDate;
 // var baseTime = apiResponse.response.body.items.item[0].baseTime;
 
 var http = require('http');
 
-function test(category){
+function test(apiResponse, category){
 
     return apiResponse.response.body.items.item.filter(function (element){
         return element.category === category;
     }).filter(function (element){
-        return element.fcstDate === "20210702" && element.fcstTime === "1200";
+        return element.fcstDate === "20210703" && element.fcstTime === "2300";
     });
 }
 
@@ -34,47 +34,40 @@ function getFormatTime(date){
     // return hr + '' + min;
 }
 
-var date = new Date();
-
 const apiData = {
     serviceKey: 'dU7dvWQUG8tftP9%2FNQlBADY5gjT5ZpS6xWVIZ%2Fwxr26jXjuJZlrLgExQvtyIaCfiioEJWez5DJ%2FcdIWAAFrctQ%3D%3D',
     numOfRows: 100,
     pageNo: 1,
 };
-var baseDate = getFormatDate(date);
-var baseTime = getFormatTime(date);
-weatherApiData = Object.assign({}, apiData, {dataType: 'JSON', base_date: baseDate, base_time: baseTime, nx: 54, ny: 126});
+
+let date = new Date();
+let previousDay = new Date(date.getTime() - (24*60*60*1000)); // 1일에 해당하는 값을 오늘에서 뺀다.
+let baseDate = getFormatDate(date);
+let baseTime = getFormatTime(date);
+let apiCallTime =
+    (baseTime >= "2300") ? "2300" :
+    (baseTime >= "2000") ? "2000" :
+    (baseTime >= "1700") ? "1700" :
+    (baseTime >= "1400") ? "1400" :
+    (baseTime >= "1100") ? "1100" :
+    (baseTime >= "0800") ? "0800" :
+    (baseTime >= "0500") ? "0500" :
+    (baseTime >= "0200") ? "0200" : "2300";
+let apiCallDate = (baseTime >= "0200") ? baseDate : getFormatDate(previousDay);
+weatherApiData = Object.assign({}, apiData, {dataType: 'JSON', base_date: apiCallDate, base_time: apiCallTime, nx: 54, ny: 126});
 weatherPayloadString = Object.entries(weatherApiData).map(e => e.join('=')).join('&');
 
 const getVilageFcstURL = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst' + '?' + weatherPayloadString;
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
-
-// function httpGetAsync(theUrl, callback){
-//     var xmlHttp = new XMLHttpRequest();
-//     xmlHttp.onreadystatechange = function() {
-//         if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-//             callback(xmlHttp.responseText);
-//     }
-//     xmlHttp.open("GET", theUrl, true); // true for asynchronous
-//     xmlHttp.send(null);
-// }
-//
-// var apiResponse = httpGetAsync(getVilageFcstURL, function (response){
-//     return response;
-// });
-
-var apiResponse = httpGet(getVilageFcstURL);
+fetch(getVilageFcstURL)
+    .then((response)=> response.json())
+    .then(function (apiResponse){
+        console.log(apiResponse.response.header.resultCode, apiResponse.response.header.resultMsg);
+        // console.log(apiResponse.response.body.items.item);
+        console.log(getFormatDate(date), getFormatTime(date));
+        console.log(baseDate, baseTime, apiCallDate, apiCallTime);
+        console.log(test(apiResponse, "TMP"));
+    })
+    .catch((error) => console.log("error:", error));
 
 console.log(getVilageFcstURL);
-console.log(apiResponse);
-// console.log(apiResponse.response.header.resultCode, apiResponse.response.header.resultMsg);
-console.log(getFormatDate(date), getFormatTime(date));
-console.log(baseDate, baseTime);
-console.log(test("TMP"));

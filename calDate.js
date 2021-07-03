@@ -1,4 +1,4 @@
-let today = new Date("2021-1-1 00:46:00");
+let today = new Date("2021-10-1 00:46:00");
 let yesterday = new Date(today.getTime() - (24*60*60*1000));
 let year = today.getFullYear();
 let month = today.getMonth() + 1;
@@ -15,14 +15,14 @@ if (hour < 0) {
     year = yesterday.getFullYear();
 }
 
-month = month > 10 ? month : '0' + month;
-day = day > 10 ? day : '0' + day;
-hour = hour > 10 ? hour : '0' + hour;
-minute = minute > 10 ? minute : '0' + minute;
-second = second > 10 ? second : '0' + second;
+month = month >= 10 ? month : '0' + month;
+day = day >= 10 ? day : '0' + day;
+hour = hour >= 10 ? hour : '0' + hour;
+minute = minute >= 10 ? minute : '0' + minute;
+second = second >= 10 ? second : '0' + second;
 
 fullDate = year + '' + month + '' + day;
 hourMin = hour + '' + minute;
 hourMinSec = hourMin + '' + second;
 
-console.log(fullDate, hourMin);
+console.log(fullDate, hour+'00');
