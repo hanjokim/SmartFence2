@@ -292,9 +292,14 @@
                 });
                 promise.done(function (data) {
                     let apiResponse = JSON.parse(data);
+                    // alert("resultCode=" + apiResponse.response.header.resultCode +"\nresultMsg=" + apiResponse.response.header.resultMsg);
+                    // console.log(JSON.stringify(apiResponse, null, 2));
 
-                    alert("resultCode=" + apiResponse.response.header.resultCode +"\nresultMsg=" + apiResponse.response.header.resultMsg);
-                    console.log(JSON.stringify(apiResponse, null, 2));
+                    let predTitle = [];
+                    let predTMP = [];
+                    let predPOP = [];
+                    let predPTY = [];
+
                 });
                 promise.fail(function (xhr, status, error) {
                     alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
