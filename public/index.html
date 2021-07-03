@@ -32,7 +32,7 @@
 
             function clock() {
                 let date = new Date(); // date Object를 받아오고
-                let month = date.getMonth(); // 달을 받아옵니다
+                let month = date.getMonth() + 1; // 달을 받아옵니다
                 // let year = date.getFullYear();
                 let clockDate = date.getDate(); // 몇일인지 받아옵니다
                 let day = date.getDay(); // 요일을 받아옵니다.
@@ -55,7 +55,7 @@
                 minutes = leadingZeros(minutes, 2);
                 seconds = leadingZeros(seconds, 2);
 
-                $dateTarget.html(`${month+1}월 ${clockDate}일 \(${week[day]}\) `); // 월은 0부터 1월이기때문에 +1
+                $dateTarget.html(`${month}월 ${clockDate}일 \(${week[day]}\) `);
                 $timeTarget.html(`${ampm} ${hours} : ${minutes} : ${seconds}`);
 
             }
@@ -112,7 +112,6 @@
                 let promise = $.ajax({
                     type: 'get',
                     url: '/getAllRouteBusArrivalList',
-
                 });
 
                 promise.done(function (data) {
@@ -125,7 +124,7 @@
                 promise.fail(function (xhr, status, error) {
                     alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
                     if (xhr.status === 0) {
-                        alert('You are offline!!\nPlease Check Your Network.');
+                        alert('System is offline!!\nPlease Check the connection.');
                     } else if (xhr.status === 404) {
                         alert('Requested URL not found.');
                     } else if (xhr.status === 500) {
@@ -204,8 +203,8 @@
 
             // 서구청 [새소식] 게시판 목록 가져오기(Array)
             function getSeoguBoardArray(pageNo){
-                const present = new Date();
-                const presentDate = present.getFullYear() + '.' + leadingZeros(present.getMonth()+1, 2) + '.' + leadingZeros(present.getDate(), 2);
+                // const present = new Date();
+                // const presentDate = present.getFullYear() + '.' + leadingZeros(present.getMonth()+1, 2) + '.' + leadingZeros(present.getDate(), 2);
 
                 let objArr = [];
                 let promise = $.ajax({
@@ -215,7 +214,7 @@
                     data: {
                         pageNo: pageNo,
                     }
-                })
+                });
                 promise.done(function (response){
                     const htmlDoc = parser.parseFromString(response, 'text/html');
                     const wrapper = htmlDoc.querySelector('table.general_board');
@@ -278,6 +277,44 @@
                 });
                 return objArr;
             }
+
+            // 날씨 정보 받아오기
+            getWeatherInfo("20210703", "2300");
+
+            function getWeatherInfo(baseDate, baseTime){
+                let promise = $.ajax({
+                    type: 'get',
+                    url: '/getVilageFcst',
+                    data: {
+                        baseDate: baseDate,
+                        baseTime: baseTime,
+                    }
+                });
+                promise.done(function (data) {
+                    let apiResponse = JSON.parse(data);
+
+                    alert("resultCode=" + apiResponse.response.header.resultCode +"\nresultMsg=" + apiResponse.response.header.resultMsg);
+                    console.log(JSON.stringify(apiResponse, null, 2));
+                });
+                promise.fail(function (xhr, status, error) {
+                    alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
+                    if (xhr.status === 0) {
+                        alert('System is offline!!\nPlease Check the connection.');
+                    } else if (xhr.status === 404) {
+                        alert('Requested URL not found.');
+                    } else if (xhr.status === 500) {
+                        alert('Internel Server Error.');
+                    } else if (error === 'parsererror') {
+                        alert('Error.nParsing JSON Request failed.');
+                    } else if (error === 'timeout') {
+                        alert('Request Time out.');
+                    } else {
+                        alert('Unknown Error.' + xhr.responseText);
+                    }
+                });
+                promise.always();
+            }
+
         })
     </script>
 

@@ -5,13 +5,16 @@ const fetch = require("node-fetch");
 
 var http = require('http');
 
-function test(apiResponse, category){
-
+function getForecastArray(apiResponse, category){
     return apiResponse.response.body.items.item.filter(function (element){
         return element.category === category;
-    }).filter(function (element){
-        return element.fcstDate === "20210703" && element.fcstTime === "2300";
-    });
+    })
+    // .filter(function (element){
+    //     return element.fcstDate === "20210704";
+    // })
+    // .filter(function (element){
+    //     return element.fcstTime === "0600";
+    // });
 }
 
 // yyyyMMdd 포맷으로 반환
@@ -60,13 +63,13 @@ weatherPayloadString = Object.entries(weatherApiData).map(e => e.join('=')).join
 const getVilageFcstURL = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst' + '?' + weatherPayloadString;
 
 fetch(getVilageFcstURL)
-    .then((response)=> response.json())
-    .then(function (apiResponse){
+    .then((response) => response.json())
+    .then((apiResponse) => {
         console.log(apiResponse.response.header.resultCode, apiResponse.response.header.resultMsg);
         // console.log(apiResponse.response.body.items.item);
         console.log(getFormatDate(date), getFormatTime(date));
         console.log(baseDate, baseTime, apiCallDate, apiCallTime);
-        console.log(test(apiResponse, "TMP"));
+        console.log(getForecastArray(apiResponse, "TMP"));
     })
     .catch((error) => console.log("error:", error));
 

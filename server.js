@@ -16,7 +16,7 @@ const bisApiNames = {
 };
 const weatherBaseUrl = 'http://apis.data.go.kr/1360000/'
 const weatherApiNames = {
-    vil: 'VilageFcstInfoService', // 동네예보 조회 서비스
+    vil: 'VilageFcstInfoService_2.0', // 동네예보 조회 서비스
     liv: 'LivingWthrIdxService01' // 생활기상지수 조회 서비스
 }
 const apiUrl = {
@@ -39,21 +39,21 @@ const apiUrl = {
     getFcstVersion: weatherBaseUrl + weatherApiNames.vil + '/getFcstVersion',           // 예보버전조회(vil): serviceKey, numOfRows, pageNo, dataType, ftype, basedatetime
 
     getFreezeIdx: weatherBaseUrl + weatherApiNames.liv + '/getFreezeIdx',               // 동파가능지수조회(liv): serviceKey, numOfRows, pageNo, dataType, areaNo, time
-    getUVIdx: weatherBaseUrl + weatherApiNames.liv + '/getUVIdx',                       // 자외지수조회(liv): serviceKey, numOfRows, pageNo, dataType, areaNo, time
-    getAirDiffusionIdx: weatherBaseUrl + weatherApiNames.liv + '/getAirDiffusionIdx',   // 대기확지수조회(liv): serviceKey, numOfRows, pageNo, dataType, areaNo, time
+    getUVIdx: weatherBaseUrl + weatherApiNames.liv + '/getUVIdx',                       // 자외선지수조회(liv): serviceKey, numOfRows, pageNo, dataType, areaNo, time
+    getAirDiffusionIdx: weatherBaseUrl + weatherApiNames.liv + '/getAirDiffusionIdx',   // 대기확산지수조회(liv): serviceKey, numOfRows, pageNo, dataType, areaNo, time
     getSenTaIdx: weatherBaseUrl + weatherApiNames.liv + '/getSenTaIdx',                 // 체감온도(여름철)조회(liv): serviceKey, numOfRows, pageNo, dataType, areaNo, time
 };
 
 const apiData = {
     serviceKey: 'dU7dvWQUG8tftP9%2FNQlBADY5gjT5ZpS6xWVIZ%2Fwxr26jXjuJZlrLgExQvtyIaCfiioEJWez5DJ%2FcdIWAAFrctQ%3D%3D',
-    numOfRows: 100,
+    numOfRows: 200,
     pageNo: 1,
 };
 
 let bisApiData = Object.assign({}, apiData, { bstopId: 168001043 }); // 청라국제도시역(89-043) 정류장
 let weatherApiData = {};
-weatherApiData.vil = Object.assign({}, apiData, {dataType: 'XML', base_date: null, base_time: null, nx: 54, ny: 126});    // 인천_서구_청라3동
-weatherApiData.liv = Object.assign({}, apiData, {dataType: 'XML', areaNo: 2826053900, time: null});                       // 인천_서구_청라3동
+weatherApiData.vil = Object.assign({}, apiData, {dataType: 'JSON', nx: 54, ny: 126});    // 인천_서구_청라3동
+weatherApiData.liv = Object.assign({}, apiData, {dataType: 'JSON', areaNo: 2826053900});                       // 인천_서구_청라3동
 
 const bisPayloadString = Object.entries(bisApiData).map(e => e.join('=')).join('&');
 // var bisPayloadString = $.param(bisApiData); // jQuery 사용시
@@ -64,14 +64,14 @@ weatherPayloadString.liv = Object.entries(weatherApiData.liv).map(e => e.join('=
 
 const busNumQueryUrl = apiUrl.getBusStationViaRouteList + '?' + bisPayloadString;
 const busArrivalQueryUrl = apiUrl.getAllRouteBusArrivalList + '?' + bisPayloadString;
-const getUltraSrtNcstURL = apiUrl.getUltraSrtNcst + '?' + weatherPayloadString.vil;
-const getUltraSrtFcstUrl = apiUrl.getUltraSrtFcst + '?' + weatherPayloadString.vil;
-const getVilageFcstURL = apiUrl.getVilageFcst + '?' + weatherPayloadString.vil;
-const getFcstVersionURL = apiUrl.getFcstVersion + '?' + weatherPayloadString.vil;
-const getFreezeIdxURL = apiUrl.getFreezeIdx + '?' + weatherPayloadString.liv;
-const getUVIdxURL = apiUrl.getUVIdx + '?' + weatherPayloadString.liv;
-const getAirDiffusionIdxURL = apiUrl.getAirDiffusionIdx + '?' + weatherPayloadString.liv;
-const getSenTaIdxURL = apiUrl.getSenTaIdx + '?' + weatherPayloadString.liv;
+let getUltraSrtNcstURL = apiUrl.getUltraSrtNcst + '?' + weatherPayloadString.vil;
+let getUltraSrtFcstUrl = apiUrl.getUltraSrtFcst + '?' + weatherPayloadString.vil;
+let getVilageFcstURL = apiUrl.getVilageFcst + '?' + weatherPayloadString.vil;
+let getFcstVersionURL = apiUrl.getFcstVersion + '?' + weatherPayloadString.vil;
+let getFreezeIdxURL = apiUrl.getFreezeIdx + '?' + weatherPayloadString.liv;
+let getUVIdxURL = apiUrl.getUVIdx + '?' + weatherPayloadString.liv;
+let getAirDiffusionIdxURL = apiUrl.getAirDiffusionIdx + '?' + weatherPayloadString.liv;
+let getSenTaIdxURL = apiUrl.getSenTaIdx + '?' + weatherPayloadString.liv;
 
 // 웹 서버를 생성합니다.
 const app = express();
@@ -118,13 +118,52 @@ let boardBaseUrl = "https://www.seo.incheon.kr/open_content/main/bbs/bbsMsgList.
 
 app.get('/getSeoguBoard', function (request, response) {
     if (boardBaseUrl) {
-        const pageNo = request.params['pageNo'];
-
+        const pageNo = request.query['pageNo'];
         axios.get(boardBaseUrl + pageNo)
             .then(html => {
                 response.send(html.data);
             });
 
+    } else {
+        response.send('url 속성이 정의되지 않았습니다.');
+    }
+});
+
+app.get('/getVilageFcst', function (request, response) {
+    if (getVilageFcstURL) {
+        const baseDate = request.query['baseDate'];
+        const baseTime = request.query['baseTime'];
+        http.get(getVilageFcstURL + '&base_date=' + baseDate + '&base_time=' + baseTime, function (web) {
+            // 데이터를 읽을 때마다
+            web.on('data', function (buffer) {
+                response.write(buffer);
+            });
+
+            // 데이터를 모두 읽으면
+            web.on('end', function () {
+                response.end();
+            });
+        });
+    } else {
+        response.send('url 속성이 정의되지 않았습니다.');
+    }
+});
+
+app.get('/getUVIdx', function (request, response) {
+    if (getUVIdxURL) {
+        const time = request.params['time'];
+        getUVIdxURL += '&time=' + time;
+        http.get(getUVIdxURL, function (web) {
+            // 데이터를 읽을 때마다
+            web.on('data', function (buffer) {
+                response.write(buffer);
+            });
+
+            // 데이터를 모두 읽으면
+            web.on('end', function () {
+                response.end();
+            });
+        });
     } else {
         response.send('url 속성이 정의되지 않았습니다.');
     }
