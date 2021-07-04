@@ -275,11 +275,30 @@
                         });
                     }
                 });
+                promise.fail(function (xhr, status, error) {
+                    alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
+                    if (xhr.status === 0) {
+                        alert('System is offline!!\nPlease Check the connection.');
+                    } else if (xhr.status === 404) {
+                        alert('Requested URL not found.');
+                    } else if (xhr.status === 500) {
+                        alert('Internel Server Error.');
+                    } else if (error === 'parsererror') {
+                        alert('Error.nParsing JSON Request failed.');
+                    } else if (error === 'timeout') {
+                        alert('Request Time out.');
+                    } else {
+                        alert('Unknown Error.' + xhr.responseText);
+                    }
+                });
+                promise.always(function (){
+                    console.log("getSeoguBoardArray() called");
+                });
                 return objArr;
             }
 
             // 날씨 정보 받아오기
-            getWeatherInfo("20210703", "2300");
+            getWeatherInfo("20210704", "1400");
 
             function getWeatherInfo(baseDate, baseTime){
                 let promise = $.ajax({
@@ -294,7 +313,7 @@
                     let apiResponse = JSON.parse(data);
                     // alert("resultCode=" + apiResponse.response.header.resultCode +"\nresultMsg=" + apiResponse.response.header.resultMsg);
                     // console.log(JSON.stringify(apiResponse, null, 2));
-
+                    console.log(apiResponse);
                     let predTitle = [];
                     let predTMP = [];
                     let predPOP = [];
@@ -317,7 +336,9 @@
                         alert('Unknown Error.' + xhr.responseText);
                     }
                 });
-                promise.always();
+                promise.always(function (){
+                    console.log("getWeatherInfo() called");
+                });
             }
 
         })
