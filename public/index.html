@@ -300,7 +300,7 @@
             // 날씨 정보 받아오기
             getWeatherInfo("20210704", "1400");
 
-            function getWeatherInfo(baseDate, baseTime){
+            function getWeatherInfo(baseDate, baseTime, catArr, dayArry){
                 let promise = $.ajax({
                     type: 'get',
                     url: '/getVilageFcst',

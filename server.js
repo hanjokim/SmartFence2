@@ -122,7 +122,9 @@ app.get('/getSeoguBoard', function (request, response) {
         axios.get(boardBaseUrl + pageNo)
             .then(html => {
                 response.send(html.data);
-            });
+            })
+            .catch((error) => console.log(error))
+            .finally();
 
     } else {
         response.send('url 속성이 정의되지 않았습니다.');
@@ -151,7 +153,7 @@ app.get('/getVilageFcst', function (request, response) {
 
 app.get('/getUVIdx', function (request, response) {
     if (getUVIdxURL) {
-        const time = request.params['time'];
+        const time = request.query['time']; // time : 2021070712
         getUVIdxURL += '&time=' + time;
         http.get(getUVIdxURL, function (web) {
             // 데이터를 읽을 때마다
