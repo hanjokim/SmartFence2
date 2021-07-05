@@ -256,10 +256,9 @@
                     });
 
                     displayBoard(objArr);
-
-                    var i = 1;
+                    var i = 1; // 첫 페이지가 출력된 후 다음 페이지부터 setInterval()에 의해 순환되므로 i = 1 로 설정
                     rollBoardTimerId = setInterval(function (){
-                        // (게시판 표시 줄수 * 반복 횟수)가 아이템 갯수를 넘으면 처음부터 다시 시작
+                        // (게시판 표시 줄수 * 반복 횟수 = 표시된 아이템 수)가 아이템 갯수를 넘으면 처음부터 다시 시작
                         if (i * boardMaxLines >= objArr.length) {
                             i = 0;
                         }
@@ -269,6 +268,7 @@
                     }, rollBoardInterval * 1000);
 
                     function displayBoard(articleArr) {
+                        // console.log(rollBoardTimerId);
                         $('#notice li').html("");
                         articleArr.forEach((item, i) => {
                             $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + ' | ' + item.author);
@@ -355,7 +355,7 @@
                 <h1>스마트펜스 정보 시스템</h1>
             </div>
             <div id="rightLogo">
-                <img src="media/logo_pure.png" class="logo" style="float: right">
+                <img src="media/logo_pure.png" class="logo">
             </div>
             <div style="clear: both"></div>
             <hr>
