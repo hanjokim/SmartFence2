@@ -271,7 +271,7 @@
                         // console.log(rollBoardTimerId);
                         $('#notice li').html("");
                         articleArr.forEach((item, i) => {
-                            $('#article_' + i).html(item.no.padStart(5, ' ') + ' | ' + item.datetime + ' | ' + item.title + '(' + item.author + ')');
+                            $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + '(' + item.author + ')');
                         });
                     }
                 });
