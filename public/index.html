@@ -269,9 +269,20 @@
 
                     function displayBoard(articleArr) {
                         // console.log(rollBoardTimerId);
-                        $('#notice li').html("");
+
+                        // 리스트 형태의 게시판
+                        // $('#notice li').html("");
+                        // articleArr.forEach((item, i) => {
+                        //     $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + '(' + item.author + ')');
+                        // });
+                        $('#noticeTable').find('thead').text("");
+                        $('#noticeTable').find('td').html("");
                         articleArr.forEach((item, i) => {
-                            $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + '(' + item.author + ')');
+                            i += 1;
+                            $('#notice' + i + '_1').html(item.no);
+                            $('#notice' + i + '_2').html(item.datetime);
+                            $('#notice' + i + '_3').html(item.title);
+                            $('#notice' + i + '_4').html(item.author);
                         });
                     }
                 });
@@ -388,15 +399,28 @@
                 <div class="sectionTitle">공지사항</div>
                 <h2 class="additionalInfo">서구청 홈페이지 [새소식] 게시판을 참고하세요</h2>
                 <link rel="stylesheet" href="css/notice.css">
-                <ul class="sq_bullet">
-                    <li id="article_0">게시판을 읽어오는 중입니다...</li>
-                    <li id="article_1"></li>
-                    <li id="article_2"></li>
-                    <li id="article_3"></li>
+<!--                리스트 형태의 게시판-->
+<!--                <ul class="sq_bullet">-->
+<!--                    <li id="article_0">게시판을 읽어오는 중입니다...</li>-->
+<!--                    <li id="article_1"></li>-->
+<!--                    <li id="article_2"></li>-->
+<!--                    <li id="article_3"></li>-->
 <!--                    <li id="article_4"></li>-->
 <!--                    <li id="article_5"></li>-->
 <!--                    <li id="article_6"></li>-->
-                </ul>
+<!--                </ul>-->
+                <table id="noticeTable">
+                    <thead>
+                        <tr><th>게시판을 읽어오는 중입니다...</th><th></th><th></th><th></th></tr>
+<!--                        <tr><th>번호</th><th>작성일</th><th>제목</th><th>작성자</th></tr>-->
+                    </thead>
+                    <tbody>
+                        <tr><td id="notice1_1"></td><td id="notice1_2"></td><td id="notice1_3"></td><td id="notice1_4"></td></tr>
+                        <tr><td id="notice2_1"></td><td id="notice2_2"></td><td id="notice2_3"></td><td id="notice2_4"></td></tr>
+                        <tr><td id="notice3_1"></td><td id="notice3_2"></td><td id="notice3_3"></td><td id="notice3_4"></td></tr>
+                        <tr><td id="notice4_1"></td><td id="notice4_2"></td><td id="notice4_3"></td><td id="notice4_4"></td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div id="right">
@@ -408,62 +432,17 @@
                     <link rel="stylesheet" href="css/bis.css">
                     <table class="bisContent">
                         <thead>
-                        <tr>
-                            <th>노선번호</th>
-                            <th>도착시간</th>
-                            <th>차량번호</th>
-                            <th>버스위치</th>
-                        </tr>
+                            <tr><th>노선번호</th><th>도착시간</th><th>차량번호</th><th>버스위치</th></tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td id="cell1_1">&nbsp;</td>
-                            <td id="cell2_1">&nbsp;</td>
-                            <td id="cell3_1">&nbsp;</td>
-                            <td id="cell4_1">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_2">&nbsp;</td>
-                            <td id="cell2_2">&nbsp;</td>
-                            <td id="cell3_2">&nbsp;</td>
-                            <td id="cell4_2">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_3">&nbsp;</td>
-                            <td id="cell2_3">&nbsp;</td>
-                            <td id="cell3_3">&nbsp;</td>
-                            <td id="cell4_3">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_4">&nbsp;</td>
-                            <td id="cell2_4">&nbsp;</td>
-                            <td id="cell3_4">&nbsp;</td>
-                            <td id="cell4_4">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_5">&nbsp;</td>
-                            <td id="cell2_5">&nbsp;</td>
-                            <td id="cell3_5">&nbsp;</td>
-                            <td id="cell4_5">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_6">&nbsp;</td>
-                            <td id="cell2_6">&nbsp;</td>
-                            <td id="cell3_6">&nbsp;</td>
-                            <td id="cell4_6">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_7">&nbsp;</td>
-                            <td id="cell2_7">&nbsp;</td>
-                            <td id="cell3_7">&nbsp;</td>
-                            <td id="cell4_7">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td id="cell1_8">&nbsp;</td>
-                            <td id="cell2_8">&nbsp;</td>
-                            <td id="cell3_8">&nbsp;</td>
-                            <td id="cell4_8">&nbsp;</td>
-                        </tr>
+                            <tr><td id="cell1_1">&nbsp;</td><td id="cell2_1">&nbsp;</td><td id="cell3_1">&nbsp;</td><td id="cell4_1">&nbsp;</td></tr>
+                            <tr><td id="cell1_2">&nbsp;</td><td id="cell2_2">&nbsp;</td><td id="cell3_2">&nbsp;</td><td id="cell4_2">&nbsp;</td></tr>
+                            <tr><td id="cell1_3">&nbsp;</td><td id="cell2_3">&nbsp;</td><td id="cell3_3">&nbsp;</td><td id="cell4_3">&nbsp;</td></tr>
+                            <tr><td id="cell1_4">&nbsp;</td><td id="cell2_4">&nbsp;</td><td id="cell3_4">&nbsp;</td><td id="cell4_4">&nbsp;</td></tr>
+                            <tr><td id="cell1_5">&nbsp;</td><td id="cell2_5">&nbsp;</td><td id="cell3_5">&nbsp;</td><td id="cell4_5">&nbsp;</td></tr>
+                            <tr><td id="cell1_6">&nbsp;</td><td id="cell2_6">&nbsp;</td><td id="cell3_6">&nbsp;</td><td id="cell4_6">&nbsp;</td></tr>
+                            <tr><td id="cell1_7">&nbsp;</td><td id="cell2_7">&nbsp;</td><td id="cell3_7">&nbsp;</td><td id="cell4_7">&nbsp;</td></tr>
+                            <tr><td id="cell1_8">&nbsp;</td><td id="cell2_8">&nbsp;</td><td id="cell3_8">&nbsp;</td><td id="cell4_8">&nbsp;</td></tr>
                         </tbody>
                     </table>
 
@@ -475,18 +454,10 @@
                 <link rel="stylesheet" href="css/atm.css">
                 <table>
                     <tr>
-                        <td>
-                            <div class="atmGauge" id="gauge1"></div>
-                        </td>
-                        <td>
-                            <div class="atmGauge" id="gauge2"></div>
-                        </td>
-                        <td>
-                            <div class="atmGauge" id="gauge3"></div>
-                        </td>
-                         <td>
-                            <div class="atmGauge" id="gauge4"></div>
-                        </td>
+                        <td><div class="atmGauge" id="gauge1"></div></td>
+                        <td><div class="atmGauge" id="gauge2"></div></td>
+                        <td><div class="atmGauge" id="gauge3"></div></td>
+                        <td><div class="atmGauge" id="gauge4"></div></td>
                     </tr>
                 </table>
                 <script src="js/raphael-min.js"></script>

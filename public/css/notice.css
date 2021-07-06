@@ -1,3 +1,4 @@
+/*
 #notice > ul > li {
     font-size: 1.2em;
     font-weight: bold;
@@ -7,4 +8,31 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: "맑은 고딕", sans-serif;
+}
+*/
+#noticeTable {
+    width: 100%;
+}
+#noticeTable > thead, #noticeTable tr td {
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: "맑은 고딕", sans-serif;
+}
+#noticeTable tr td:nth-child(1) {
+    text-align: center;
+    width: 100px;
+}
+#noticeTable tr td:nth-child(2) {
+    width: 140px;
+}
+#noticeTable tr td:nth-child(3) {
+    width: auto;
+}
+#noticeTable tr td:nth-child(4) {
+    width: 150px;
 }
