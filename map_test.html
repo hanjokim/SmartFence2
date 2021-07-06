@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="render()">
+    <table style="display: inline-block; float: left">
+        <thead>
+            <th>이름</th>
+            <th>전화번호</th>
+        </thead>
+        <tbody id="test1">
+
+        </tbody>
+    </table>
+    <table style="display: inline-block; float: left">
+        <thead>
+            <th>이름</th>
+            <th>전화번호</th>
+        </thead>
+        <tbody id="test2">
+
+        </tbody>
+    </table>
+    <script>
+        const userList = reqUserList(); // 함수 선언 전 변수 선언은 호이스팅에 의해 허락됨
+
+        function reqUserList(){
+            // ajax를 통해 데이터를 불러왔다고 가정
+            return [
+                { name: "윾또막", phone: "010-1111-1111" },
+                { name: "장꾸", phone: "010-2222-2222" },
+            ];
+        }
+
+        function makeListToDom(list){
+            const dom = list.map(elem => `<tr><td>${elem.name}</td><td>${elem.phone}</td></tr>`);
+
+            return dom;
+        }
+
+        function renderList(dom){
+            const d = dom.join('');
+
+            document.getElementById("test1").innerHTML = d;
+            document.getElementById("test2").innerHTML = d;
+        }
+
+        function render(){
+            const userListDom = makeListToDom(userList);
+
+            renderList(userListDom);
+        }
+    </script>
+</body>
+</html>
