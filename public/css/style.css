@@ -22,10 +22,6 @@ header > div {
     /*display: inline-table;*/
     position: relative;
     float: left;
-
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*transform: translate(0%, -50%);*/
 }
 header > div > img {
     position: absolute;
@@ -52,10 +48,6 @@ header > div > img {
     padding-top: 0.1em;
     padding-bottom: 0.2em;
 }
-/*.sq_bullet {*/
-/*    list-style: square;*/
-/*    !*list-style-image: url("../media/icon_information.png");*!*/
-/*}*/
 .sectionTitle {
     font-size:2em;
     font-weight: bold;
