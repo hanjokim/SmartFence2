@@ -91,6 +91,9 @@
                     },
                     error:  function (){
                         alert("Failed to get bus station information.");
+                    },
+                    complete: function (){
+                        console.log("getRouteNo() called : " + Date.now());
                     }
                 });
             }
@@ -137,7 +140,9 @@
                         alert('Unknown Error.' + xhr.responseText);
                     }
                 });
-                promise.always();
+                promise.always(function (){
+                    console.log("getBusSchedule() called : " + Date.now());
+                });
             }
 
             // 버스 도착 정보 테이블에 출력
@@ -275,14 +280,14 @@
                         // articleArr.forEach((item, i) => {
                         //     $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + '(' + item.author + ')');
                         // });
-                        $('#noticeTable > thead').text("");
+                        $('#noticeTable > thead').html("");
                         $('#noticeTable').find('td').html("");
                         articleArr.forEach((item, i) => {
                             i += 1;
-                            $('#notice' + i + '_1').html(item.no);
-                            $('#notice' + i + '_2').html(item.datetime);
-                            $('#notice' + i + '_3').html(item.title);
-                            $('#notice' + i + '_4').html(item.author);
+                            $('#notice'+i+'_1').text(item.no);
+                            $('#notice'+i+'_2').text(item.datetime);
+                            $('#notice'+i+'_3').text(item.title);
+                            $('#notice'+i+'_4').text(item.author);
                         });
                     }
                 });
@@ -303,7 +308,7 @@
                     }
                 });
                 promise.always(function (){
-                    console.log("getSeoguBoardArray() called");
+                    console.log("getSeoguBoardArray() called : " + Date.now());
                 });
                 return objArr;
             }
@@ -348,7 +353,7 @@
                     }
                 });
                 promise.always(function (){
-                    console.log("getWeatherInfo() called");
+                    console.log("getWeatherInfo() called : " + Date.now());
                 });
             }
 
