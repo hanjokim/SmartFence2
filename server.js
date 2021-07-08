@@ -1,8 +1,11 @@
 ﻿// const https = require('https');
 // https.globalAgent.options.ca = require('ssl-root-cas').create();
 const axios = require('axios');
+const moment = require('moment');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+const logTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
 const http = require('http');
 const express = require('express');
@@ -89,7 +92,7 @@ app.get('/getAllRouteBusArrivalList', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
-                console.log('/getAllRouteBusArrivalList' + ' | ' + response.statusCode + ':' + response.statusMessage);
+                console.log(moment().format(logTimeFormat) + ' | ' + response.statusCode + ':' + response.statusMessage + ' | ' + '/getAllRouteBusArrivalList');
             });
         });
     } else {
@@ -108,7 +111,7 @@ app.get('/getBusStationViaRouteList', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
-                console.log('/getBusStationViaRouteList' + ' | ' + response.statusCode + ':' + response.statusMessage);
+                console.log(moment().format(logTimeFormat) + ' | ' + response.statusCode + ':' + response.statusMessage + ' | ' + '/getBusStationViaRouteList');
             });
         });
     } else {
@@ -124,9 +127,9 @@ app.get('/getSeoguBoard', function (request, response) {
         axios.get(boardBaseUrl + pageNo)
             .then(html => {
                 response.send(html.data);
-                console.log('/getSeoguBoard' + ' | ' + response.statusCode + ':' + response.statusMessage);
+                console.log(moment().format(logTimeFormat) + ' | ' + response.statusCode + ':' + response.statusMessage + ' | ' + '/getSeoguBoard');
             })
-            .catch((error) => console.log('/getSeoguBoard' + ' | ERROR:' + error.errno))
+            .catch((error) => console.log(moment().format(logTimeFormat) + ' | ERROR:' + error.errno +' | ' + '/getSeoguBoard' ))
             .finally();
     } else {
         response.send('url 속성이 정의되지 않았습니다.');
@@ -146,7 +149,7 @@ app.get('/getVilageFcst', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
-                console.log('/getVilageFcst' + ' | ' + response.statusCode + ':' + response.statusMessage);
+                console.log(moment().format(logTimeFormat) + ' | ' + response.statusCode + ':' + response.statusMessage + ' | ' + '/getVilageFcst');
             });
         });
     } else {
@@ -167,7 +170,7 @@ app.get('/getUVIdx', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
-                console.log('/getUVIdx' + ' | ' + response.statusCode + ':' + response.statusMessage);
+                console.log(moment().format(logTimeFormat) + ' | ' + response.statusCode + ':' + response.statusMessage + ' | ' + '/getUVIdx');
             });
         });
     } else {

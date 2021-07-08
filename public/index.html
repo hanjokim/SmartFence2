@@ -122,7 +122,7 @@
                     const xmlObj = parser.parseFromString(xmlString, "text/xml");
                     let inBusArray = getArrivalBusInfo(xmlObj);
 
-                    outputBusArrivalInfo(inBusArray);
+                    renderBusArrivalInfo(inBusArray);
                 });
                 promise.fail(function (xhr, status, error) {
                     alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
@@ -146,7 +146,7 @@
             }
 
             // 버스 도착 정보 테이블에 출력
-            function outputBusArrivalInfo(inBusArray){
+            function renderBusArrivalInfo(inBusArray){
                 let cell = "#cell";
                 let rowNo = 1;
                 for (let bus of inBusArray){
@@ -260,7 +260,7 @@
                         // $('#article_' + i).html(article.no + ' | ' + article.datetime + ' | ' + article.title + ' | ' + article.author);
                     });
 
-                    displayBoard(objArr);
+                    renderBoard(objArr);
                     var i = 1; // 첫 페이지가 출력된 후 다음 페이지부터 setInterval()에 의해 순환되므로 i = 1 로 설정
                     rollBoardTimerId = setInterval(function (){
                         // (게시판 표시 줄수 * 반복 횟수 = 표시된 아이템 수)가 아이템 갯수를 넘으면 처음부터 다시 시작
@@ -268,11 +268,11 @@
                             i = 0;
                         }
                         var dispItems = objArr.slice(i * boardMaxLines, (i+1)*boardMaxLines);
-                        displayBoard(dispItems);
+                        renderBoard(dispItems);
                         i++;
                     }, rollBoardInterval * 1000);
 
-                    function displayBoard(articleArr) {
+                    function renderBoard(articleArr) {
                         // console.log(rollBoardTimerId);
 
                         // 리스트 형태의 게시판
