@@ -29,7 +29,7 @@ function getFormatDate(date){
 
 function getFormatTime(date){
     var hr = date.getHours();
-    hr = hr > 10 ? hr : '0' + hr;
+    hr = hr >= 10 ? hr : '0' + hr;
     return hr + '00';
 
     // var min = date.getMinutes();

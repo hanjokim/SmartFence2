@@ -89,6 +89,7 @@ app.get('/getAllRouteBusArrivalList', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
+                console.log('/getAllRouteBusArrivalList' + ' | ' + response.statusCode + ':' + response.statusMessage);
             });
         });
     } else {
@@ -107,6 +108,7 @@ app.get('/getBusStationViaRouteList', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
+                console.log('/getBusStationViaRouteList' + ' | ' + response.statusCode + ':' + response.statusMessage);
             });
         });
     } else {
@@ -122,10 +124,10 @@ app.get('/getSeoguBoard', function (request, response) {
         axios.get(boardBaseUrl + pageNo)
             .then(html => {
                 response.send(html.data);
+                console.log('/getSeoguBoard' + ' | ' + response.statusCode + ':' + response.statusMessage);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => console.log('/getSeoguBoard' + ' | ERROR:' + error.errno))
             .finally();
-
     } else {
         response.send('url 속성이 정의되지 않았습니다.');
     }
@@ -144,6 +146,7 @@ app.get('/getVilageFcst', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
+                console.log('/getVilageFcst' + ' | ' + response.statusCode + ':' + response.statusMessage);
             });
         });
     } else {
@@ -164,6 +167,7 @@ app.get('/getUVIdx', function (request, response) {
             // 데이터를 모두 읽으면
             web.on('end', function () {
                 response.end();
+                console.log('/getUVIdx' + ' | ' + response.statusCode + ':' + response.statusMessage);
             });
         });
     } else {
