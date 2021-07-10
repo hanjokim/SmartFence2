@@ -9,12 +9,12 @@ function getForecastArray(apiResponse, category){
     return apiResponse.response.body.items.item.filter(function (element){
         return element.category === category;
     })
-    // .filter(function (element){
-    //     return element.fcstDate === "20210704";
-    // })
-    // .filter(function (element){
-    //     return element.fcstTime === "0600";
-    // });
+    .filter(function (element){
+        return element.fcstDate >= baseDate;
+    })
+    .filter(function (element){
+        return element.fcstTime >= baseTime;
+    }).slice(1, 7);
 }
 
 // yyyyMMdd 포맷으로 반환

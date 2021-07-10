@@ -316,9 +316,84 @@
             }
 
             // 날씨 정보 받아오기
-            getWeatherInfo("20210709", "1400");
+            const categoryArray = ["TMP", "POP", "PTY"];
+            let timeParams = getApiTimeParams();
+            console.log(JSON.stringify(timeParams));
 
-            function getWeatherInfo(baseDate, baseTime, catArr, dayArry){
+            function getApiTimeParams(){
+                function getFormatDate(date) {
+                    var year = date.getFullYear();                  //yyyy
+                    var month = (1 + date.getMonth());              //M
+                    month = month >= 10 ? month : '0' + month;      //month 두자리로 저장
+                    var day = date.getDate();                       //d
+                    day = day >= 10 ? day : '0' + day;              //day 두자리로 저장
+                    return year + '' + month + '' + day;           //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
+                }
+
+                function getFormatTime(date) {
+                    var hr = date.getHours();
+                    hr = hr >= 10 ? hr : '0' + hr;
+                    return hr + '00';
+
+                    // var min = date.getMinutes();
+                    // min = min > 10 ? min : '0' + min;
+                    // return hr + '' + min;
+                }
+
+                let today = new Date();
+                let previousDay = new Date(today.getTime() - (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에서 뺀다.
+                let baseDate = getFormatDate(today);
+                let baseTime = getFormatTime(today);
+                let apiCallTime =
+                    (baseTime >= "2300") ? "2300" :
+                    (baseTime >= "2000") ? "2000" :
+                    (baseTime >= "1700") ? "1700" :
+                    (baseTime >= "1400") ? "1400" :
+                    (baseTime >= "1100") ? "1100" :
+                    (baseTime >= "0800") ? "0800" :
+                    (baseTime >= "0500") ? "0500" :
+                    (baseTime >= "0200") ? "0200" : "2300";
+                let apiCallDate = (baseTime >= "0200") ? baseDate : getFormatDate(previousDay);
+                let apiCallDateTime = apiCallDate + apiCallTime;
+
+                let year = today.getFullYear();
+                let month = today.getMonth() + 1;
+                let day = today.getDate();
+                let hour = today.getHours();
+                let minute = today.getMinutes();
+                let second = today.getSeconds();
+
+                month = month > 10 ? month : '0' + month;
+                day = day >= 10 ? day : '0' + day;
+
+                hour = minute > 45 ? hour : hour - 1;
+                if (hour < 0) {
+                    hour = 23;
+                    day = previousDay.getDate();
+                    day = day >= 10 ? day : '0' + day;
+                }
+                hour = hour >= 10 ? hour : '0' + hour;
+                minute = minute >= 10 ? minute : '0' + minute;
+                second = second >= 10 ? second : '0' + second;
+
+                fullDate = year + '' + month + '' + day;
+                let dateHour = fullDate + hour;
+                hourMin = hour + '' + minute;
+                hourMinSec = hourMin + '' + second;
+
+                return apiTimeParams = {
+                    // baseDate: baseDate,
+                    // baseTime:baseTime,
+                    apiCallDate: apiCallDate,
+                    apiCallTime: apiCallTime,
+                    // apiCallDateTime: apiCallDateTime,
+                };
+            }
+
+
+            getWeatherInfo(apiTimeParams.apiCallDate, apiTimeParams.apiCallTime, categoryArray);
+
+            function getWeatherInfo(baseDate, baseTime, catArr){
                 let promise = $.ajax({
                     type: 'get',
                     url: '/getVilageFcst',
@@ -331,12 +406,31 @@
                     let apiResponse = JSON.parse(data);
                     // alert("resultCode=" + apiResponse.response.header.resultCode +"\nresultMsg=" + apiResponse.response.header.resultMsg);
                     // console.log(JSON.stringify(apiResponse, null, 2));
-                    console.log(apiResponse);
+                    const itemArray = apiResponse.response.body.items.item;
+                    // console.log(JSON.stringify(itemArray));
                     let predTitle = [];
                     let predTMP = [];
                     let predPOP = [];
                     let predPTY = [];
 
+                    let forecastArray = [];
+                    catArr.forEach(function (category){
+                        forecastArray.push(getForecastArray(itemArray, category));
+                    });
+                    function getForecastArray(itemArray, category){
+                        let result = itemArray.filter(function (element){
+                            return element.category === category;
+                        }).slice(0, 6);
+                        console.log(result);
+                        return result.map(a => a.fcstValue);
+                    }
+                    console.log(forecastArray);
+                    function makeListToDom(list){
+                        let $tableHtml = list.map(elem => `<tr><td>${elem.name}</td><td>${elem.phone}</td></tr>`).join('');
+
+
+                        $('#climateData').innerHTML = $tableHtml;
+                    }
                 });
                 promise.fail(function (xhr, status, error) {
                     alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
@@ -514,23 +608,16 @@
                 <div class="sectionTitle">날씨정보</div>
                 <h2 class="additionalInfo">[청라국제도시역 : 89-043] 주변</h2>
                 <link rel="stylesheet" href="css/climate.css">
-                <table class="climate">
+                <table class="climate vil">
                     <thead>
                     <tr>
-                        <th>&nbsp;</th>
-                        <th>1시간 후</th><th>2시간 후</th><th>3시간 후</th><th>4시간 후</th><th>5시간 후</th><th>6시간 후</th>
+                        <th>&nbsp;</th><th>1시간 후</th><th>2시간 후</th><th>3시간 후</th><th>4시간 후</th><th>5시간 후</th><th>6시간 후</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr class="weatherPredict">
-                        <td>예상기온</td><td>14&#8451;</td><td>11&#8451;</td><td>9&#8451;</td><td>7&#8451;</td><td>6&#8451;</td><td>6&#8451;</td>
-                    </tr>
-                    <tr class="weatherPredict">
-                        <td>강수확률</td><td>14%</td><td>11%</td><td>9%</td><td>7%</td><td>6%</td><td>6%</td>
-                    </tr>
-                    <tr class="weatherPredict">
-                        <td>강수형태</td><td>14&#8451;</td><td>11&#8451;</td><td>9&#8451;</td><td>7&#8451;</td><td>6&#8451;</td><td>6&#8451;</td>
-                    </tr>
+                    <tbody id="climateData">
+                        <tr><td>예상기온</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>강수확률</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>강수형태</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
                 </table>
             </div>

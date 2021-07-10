@@ -35,23 +35,15 @@
         }
 
         function makeListToDom(list){
-            const dom = list.map(elem => `<tr><td>${elem.name}</td><td>${elem.phone}</td></tr>`);
+            const $innerhtml =list.map(elem => `<tr><td>${elem.name}</td><td>${elem.phone}</td></tr>`).join('');
 
-            return dom;
+
+            document.getElementById("test1").innerHTML = $innerhtml;
+            document.getElementById("test2").innerHTML = $innerhtml;
         }
 
-        function renderList(dom){
-            const d = dom.join('');
+        makeListToDom(userList);
 
-            document.getElementById("test1").innerHTML = d;
-            document.getElementById("test2").innerHTML = d;
-        }
-
-        function render(){
-            const userListDom = makeListToDom(userList);
-
-            renderList(userListDom);
-        }
     </script>
 </body>
 </html>

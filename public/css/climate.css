@@ -7,10 +7,6 @@ table.climate {
 table.climate tr {
     text-align: center;
 }
-
-table.climate img {
-    padding: 0 15px;
-}
 table.climate td, table.climate th {
     border: 1px solid #000000;
     padding: 0 4px;
