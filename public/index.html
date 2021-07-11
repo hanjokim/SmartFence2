@@ -422,14 +422,25 @@
                             return element.category === category;
                         }).slice(0, 6);
                         console.log(result);
-                        return result.map(a => a.fcstValue);
+                        return result.map(a =>
+                            (category === "TMP") ? a.fcstValue + '&#8451;' :
+                                (category === "POP") ? a.fcstValue + '%' : a.fcstValue + '');
                     }
-                    console.log(forecastArray);
+                    console.log("forcastArray:", forecastArray);
+
+                    let tableHtml = "";
+                    const tableTitle = ["예상기온", "강수확률", "강수형태"];
+
+                    for (let i = 0; i < forecastArray.length; i++){
+                        forecastArray[i].unshift(tableTitle[i]);
+                        tableHtml += makeListToDom(forecastArray[i]);
+                    }
+                    console.log(tableHtml);
+                    // $('tbody#climateData').innerHTML = tableHtml;
+                    document.getElementById("climateData").innerHTML = tableHtml;
                     function makeListToDom(list){
-                        let $tableHtml = list.map(elem => `<tr><td>${elem.name}</td><td>${elem.phone}</td></tr>`).join('');
-
-
-                        $('#climateData').innerHTML = $tableHtml;
+                        return `<tr><td>${list[0]}</td><td>${list[1]}</td><td>${list[2]}</td><td>${list[3]}</td><td>${list[4]}</td><td>${list[5]}</td><td>${list[6]}</td></tr>`;
+                        // return list.map(elem => `<tr><td>${elem[0]}</td><td>${elem[1]}</td><td>${elem[2]}</td><td>${elem[3]}</td><td>${elem[4]}</td><td>${elem[5]}</td><td>${elem[6]}</td></tr>`);
                     }
                 });
                 promise.fail(function (xhr, status, error) {
