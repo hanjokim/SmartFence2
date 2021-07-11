@@ -5,6 +5,7 @@ table.climate {
     border-collapse: collapse;
 }
 table.climate tr {
+    height: 2.2em;
     text-align: center;
 }
 table.climate td, table.climate th {

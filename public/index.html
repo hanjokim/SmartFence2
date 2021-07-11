@@ -13,6 +13,7 @@
             let bisTimerId = -1;
             let getBoardTimerId = -1;
             let rollBoardTimerId = -1;
+            let weatherTimerId = -1;
 
             // number.toString().padStart(2, '0');
             function leadingZeros(n, digits) {
@@ -317,29 +318,17 @@
 
             // 날씨 정보 받아오기
             const categoryArray = ["TMP", "POP", "PTY"];
-            let timeParams = getApiTimeParams();
-            console.log(JSON.stringify(timeParams));
+            const rowTitle = ["예상기온", "강수확률", "강수형태"];
+
+            weatherInit();
+
+            function weatherInit() {
+                let timeParams = getApiTimeParams();
+                getWeatherInfo(timeParams.apiCallDate, timeParams.apiCallTime, categoryArray);
+                weatherTimerId = setTimeout(weatherInit, 10*60*1000);
+            }
 
             function getApiTimeParams(){
-                function getFormatDate(date) {
-                    var year = date.getFullYear();                  //yyyy
-                    var month = (1 + date.getMonth());              //M
-                    month = month >= 10 ? month : '0' + month;      //month 두자리로 저장
-                    var day = date.getDate();                       //d
-                    day = day >= 10 ? day : '0' + day;              //day 두자리로 저장
-                    return year + '' + month + '' + day;            //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
-                }
-
-                function getFormatTime(date) {
-                    var hr = date.getHours();
-                    hr = hr >= 10 ? hr : '0' + hr;
-                    return hr + '00';
-
-                    // var min = date.getMinutes();
-                    // min = min > 10 ? min : '0' + min;
-                    // return hr + '' + min;
-                }
-
                 let today = new Date();
                 let previousDay = new Date(today.getTime() - (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에서 뺀다.
                 let baseDate = getFormatDate(today);
@@ -390,8 +379,24 @@
                 };
             }
 
+            function getFormatDate(date) {
+                var year = date.getFullYear();                  //yyyy
+                var month = (1 + date.getMonth());              //M
+                month = month >= 10 ? month : '0' + month;      //month 두자리로 저장
+                var day = date.getDate();                       //d
+                day = day >= 10 ? day : '0' + day;              //day 두자리로 저장
+                return year + '' + month + '' + day;            //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
+            }
 
-            getWeatherInfo(apiTimeParams.apiCallDate, apiTimeParams.apiCallTime, categoryArray);
+            function getFormatTime(date) {
+                var hr = date.getHours();
+                hr = hr >= 10 ? hr : '0' + hr;
+                return hr + '00';
+
+                // var min = date.getMinutes();
+                // min = min > 10 ? min : '0' + min;
+                // return hr + '' + min;
+            }
 
             function getWeatherInfo(baseDate, baseTime, catArr){
                 let promise = $.ajax({
@@ -403,44 +408,49 @@
                     }
                 });
                 promise.done(function (data) {
-                    let apiResponse = JSON.parse(data);
-                    // alert("resultCode=" + apiResponse.response.header.resultCode +"\nresultMsg=" + apiResponse.response.header.resultMsg);
-                    // console.log(JSON.stringify(apiResponse, null, 2));
-                    const itemArray = apiResponse.response.body.items.item;
-                    // console.log(JSON.stringify(itemArray));
-                    let predTitle = [];
-                    let predTMP = [];
-                    let predPOP = [];
-                    let predPTY = [];
+                    let apiResponse = null;
+                    try {
+                        apiResponse = JSON.parse(data);
+                    } catch (error) {
+                        console.log("/getVilageFcst API Error : ", error);
+                        return;
+                    }
 
+                    const itemArray = apiResponse.response.body.items.item;
                     let forecastArray = [];
+
                     catArr.forEach(function (category){
                         forecastArray.push(getForecastArray(itemArray, category));
                     });
+
                     function getForecastArray(itemArray, category){
                         let result = itemArray.filter(function (element){
                             return element.category === category;
                         }).slice(0, 6);
-                        console.log(result);
+                        // console.log(result);
                         return result.map(a =>
                             (category === "TMP") ? a.fcstValue + '&#8451;' :
-                                (category === "POP") ? a.fcstValue + '%' : a.fcstValue + '');
+                            (category === "POP") ? a.fcstValue + '%' :
+                            (category === "PTY" && a.fcstValue === '0') ? "없음" :
+                            (category === "PTY" && a.fcstValue === '1') ? "비" :
+                            (category === "PTY" && a.fcstValue === '2') ? "비/눈" :
+                            (category === "PTY" && a.fcstValue === '3') ? "눈" :
+                            (category === "PTY" && a.fcstValue === '4') ? "소나기" : "&nbsp;")
                     }
+
                     console.log("forcastArray:", forecastArray);
 
                     let tableHtml = "";
-                    const tableTitle = ["예상기온", "강수확률", "강수형태"];
 
                     for (let i = 0; i < forecastArray.length; i++){
-                        forecastArray[i].unshift(tableTitle[i]);
+                        forecastArray[i].unshift(rowTitle[i]);
                         tableHtml += makeListToDom(forecastArray[i]);
                     }
-                    console.log(tableHtml);
-                    // $('tbody#climateData').innerHTML = tableHtml;
-                    document.getElementById("climateData").innerHTML = tableHtml;
+
+                    $('#climateData').html(tableHtml);
+
                     function makeListToDom(list){
                         return `<tr><td>${list[0]}</td><td>${list[1]}</td><td>${list[2]}</td><td>${list[3]}</td><td>${list[4]}</td><td>${list[5]}</td><td>${list[6]}</td></tr>`;
-                        // return list.map(elem => `<tr><td>${elem[0]}</td><td>${elem[1]}</td><td>${elem[2]}</td><td>${elem[3]}</td><td>${elem[4]}</td><td>${elem[5]}</td><td>${elem[6]}</td></tr>`);
                     }
                 });
                 promise.fail(function (xhr, status, error) {
