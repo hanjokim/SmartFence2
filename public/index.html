@@ -319,13 +319,15 @@
             // 날씨 정보 받아오기
             const categoryArray = ["TMP", "POP", "PTY"];
             const rowTitle = ["예상기온", "강수확률", "강수형태"];
+            let weatherInfoInterval = 1 // 정상적인 경우 30분, 초기와 에러 발생시 1분 호출 간격
 
             weatherInit();
 
             function weatherInit() {
                 let timeParams = getApiTimeParams();
                 getWeatherInfo(timeParams.apiCallDate, timeParams.apiCallTime, categoryArray);
-                weatherTimerId = setTimeout(weatherInit, 10*60*1000);
+                weatherTimerId = setTimeout(weatherInit, weatherInfoInterval*60*1000);
+                console.log("weatherInfoInterval: ", weatherInfoInterval);
             }
 
             function getApiTimeParams(){
@@ -413,9 +415,10 @@
                         apiResponse = JSON.parse(data);
                     } catch (error) {
                         console.log("/getVilageFcst API Error : ", error);
+                        weatherInfoInterval = 1;
                         return;
                     }
-
+                    weatherInfoInterval = 30;
                     const itemArray = apiResponse.response.body.items.item;
                     let forecastArray = [];
 
@@ -438,7 +441,7 @@
                             (category === "PTY" && a.fcstValue === '4') ? "소나기" : "&nbsp;")
                     }
 
-                    console.log("forcastArray:", forecastArray);
+                    console.log("forcastArray: ", forecastArray);
 
                     let tableHtml = "";
 
