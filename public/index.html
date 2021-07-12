@@ -319,7 +319,7 @@
             // 날씨 정보 받아오기
             const categoryArray = ["TMP", "POP", "PTY"];
             const rowTitle = ["예상기온", "강수확률", "강수형태"];
-            let weatherInfoInterval = 1 // 정상적인 경우 30분, 초기와 에러 발생시 1분 호출 간격
+            let weatherInfoInterval = 1 // 정상적인 경우 30분, 초기와 에러 발생시 1분 간격 호출
 
             weatherInit();
 
@@ -332,7 +332,9 @@
 
             function getApiTimeParams(){
                 let today = new Date();
-                let previousDay = new Date(today.getTime() - (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에서 뺀다.
+                let yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에서 뺀다.
+                let tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에 더한다.
+                let dayAfterTomorrow = new Date(today.getTime() + (2 * 24 * 60 * 60 * 1000)); // 2일에 해당하는 값을 오늘에 더한다.
                 let baseDate = getFormatDate(today);
                 let baseTime = getFormatTime(today);
                 let apiCallTime =
@@ -344,7 +346,7 @@
                     (baseTime >= "0800") ? "0800" :
                     (baseTime >= "0500") ? "0500" :
                     (baseTime >= "0200") ? "0200" : "2300";
-                let apiCallDate = (baseTime >= "0200") ? baseDate : getFormatDate(previousDay);
+                let apiCallDate = (baseTime >= "0200") ? baseDate : getFormatDate(yesterday);
                 let apiCallDateTime = apiCallDate + apiCallTime;
 
                 let year = today.getFullYear();
@@ -360,7 +362,7 @@
                 hour = minute > 45 ? hour : hour - 1;
                 if (hour < 0) {
                     hour = 23;
-                    day = previousDay.getDate();
+                    day = yesterday.getDate();
                     day = day >= 10 ? day : '0' + day;
                 }
                 hour = hour >= 10 ? hour : '0' + hour;
