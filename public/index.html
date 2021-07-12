@@ -245,8 +245,6 @@
                                     break
                                 case 4:
                                     let articleDate = $(e).text();
-                                    // article['datetime'] = articleDate.indexOf(':') > 0 ? presentDate : articleDate; // 당일자 게시물은 날짜가 아닌 시간 표시이므로 이를 당일 날짜로 변경
-
                                     // 당일자 게시물은 날짜가 아닌 시간 표시이므로 이를 "[오늘]+시간"으로 변경
                                     indexOfSecondSeparator = articleDate.lastIndexOf(':');
                                     article['datetime'] = indexOfSecondSeparator > 0 ? "[오늘]" + articleDate.slice(0, indexOfSecondSeparator) : articleDate;
@@ -333,8 +331,8 @@
             function getApiTimeParams(){
                 let today = new Date();
                 let yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에서 뺀다.
-                let tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에 더한다.
-                let dayAfterTomorrow = new Date(today.getTime() + (2 * 24 * 60 * 60 * 1000)); // 2일에 해당하는 값을 오늘에 더한다.
+                // let tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000)); // 1일에 해당하는 값을 오늘에 더한다.
+                // let dayAfterTomorrow = new Date(today.getTime() + (2 * 24 * 60 * 60 * 1000)); // 2일에 해당하는 값을 오늘에 더한다.
                 let baseDate = getFormatDate(today);
                 let baseTime = getFormatTime(today);
                 let apiCallTime =
