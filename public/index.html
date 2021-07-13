@@ -64,7 +64,6 @@
             function clockInit() {
                 clock(); // 최초에 함수를 한번 실행시켜주고
                 clockTimerId = setInterval(clock, 1000); // setInterval이라는 함수로 매초마다 실행을 해줍니다.
-                // setInterval은 첫번째 파라메터는 함수이고 두번째는 시간인데 밀리초단위로 받습니다. 1000 = 1초
             }
 
             clockInit();
@@ -202,16 +201,10 @@
             function displayBoardInfo(){
                 articleArray = getSeoguBoardArray(1);
                 console.log(articleArray);
-                // articleArray.forEach((item, i) => {
-                //     $('#article_' + i).html(item.no + ' | ' + item.datetime + ' | ' + item.title + ' | ' + item.author);
-                // });
             }
 
             // 서구청 [새소식] 게시판 목록 가져오기(Array)
             function getSeoguBoardArray(pageNo){
-                // const present = new Date();
-                // const presentDate = present.getFullYear() + '.' + leadingZeros(present.getMonth()+1, 2) + '.' + leadingZeros(present.getDate(), 2);
-
                 let objArr = [];
                 let promise = $.ajax({
                     type: 'get',
@@ -412,7 +405,7 @@
                 promise.done(function (data) {
                     let apiResponse = null;
                     try {
-                        apiResponse = JSON.parse(data);
+                        apiResponse = JSON.parse(data);  // API 호출시 HTTP 에러가 발생하면 XML로 결과값을 주므로 parse 에러 발생
                     } catch (error) {
                         console.log("/getVilageFcst API Error : ", error);
                         weatherInfoInterval = 1;
@@ -457,20 +450,21 @@
                     }
                 });
                 promise.fail(function (xhr, status, error) {
-                    alert("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
+                    console.log("code = " + xhr.status + "\nmessage = " + xhr.responseText + "\nerror = " + error); // 실패 시 처리
                     if (xhr.status === 0) {
-                        alert('System is offline!!\nPlease Check the connection.');
+                        console.log('System is offline!!\nPlease Check the connection.');
                     } else if (xhr.status === 404) {
-                        alert('Requested URL not found.');
+                        console.log('Requested URL not found.');
                     } else if (xhr.status === 500) {
-                        alert('Internel Server Error.');
+                        console.log('Internel Server Error.');
                     } else if (error === 'parsererror') {
-                        alert('Error.nParsing JSON Request failed.');
+                        console.log('Error.\nParsing JSON Request failed.');
                     } else if (error === 'timeout') {
-                        alert('Request Time out.');
+                        console.log('Request Time out.');
                     } else {
-                        alert('Unknown Error.' + xhr.responseText);
+                        console.log('Unknown Error.' + xhr.responseText);
                     }
+                    weatherInfoInterval = 1;
                 });
                 promise.always(function (){
                     console.log("getWeatherInfo() called : " + Date.now());
