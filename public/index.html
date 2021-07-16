@@ -240,7 +240,7 @@
                                     let articleDate = $(e).text();
                                     // 당일자 게시물은 날짜가 아닌 시간 표시이므로 이를 "[오늘]+시간"으로 변경
                                     indexOfSecondSeparator = articleDate.lastIndexOf(':');
-                                    article['datetime'] = indexOfSecondSeparator > 0 ? "[오늘]" + articleDate.slice(0, indexOfSecondSeparator) : articleDate;
+                                    article['datetime'] = indexOfSecondSeparator > 0 ? "[오늘] " + articleDate.slice(0, indexOfSecondSeparator) : articleDate;
                                     break
                                 case 5:
                                     article['hits'] = $(e).text();
